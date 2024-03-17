@@ -91,7 +91,7 @@ test('Drag and Drop', async t => {
 })
 
 
-fixture.only`Add Contact`
+fixture`Add Contact`
     .page`https://gruppe-782.developerakademie.net/board.html`;
 
 test('Adding a Contact', async t => {
@@ -104,6 +104,15 @@ test('Adding a Contact', async t => {
         .typeText('#addContactPhone', '012312341234')
         .click(Selector('button').withText('Create contact'))
 
+})
+
+fixture.only`DeleteContact`
+    .page`https://gruppe-782.developerakademie.net/contacts.html`;
+
+test('Deleting a Contact', async t => {
+    await t
+        .click(Selector('h2').withText('TestCafe2'))
+        .click('button.profileDel')
 })
 
 
