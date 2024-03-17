@@ -25,23 +25,23 @@ test('Hover summary elements', async t => {
         .maximizeWindow()
         .wait(2000)
         .hover(`.box-container > .summary-top > .summary-big-box`)
-        .wait(1500)
+        .wait(300)
         .hover('.box-container > .summary-top > .summary-small-box')
-        .wait(1500)
+        .wait(300)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(1)')
-        .wait(1500)
+        .wait(300)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(2)')
-        .wait(1500)
+        .wait(300)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(3)')
-        .wait(1500)
+        .wait(300)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(4)')
-        .wait(1500)
+        .wait(300)
         .click('#taskPage')
 
 })
 
 
-fixture.only`Adding a Task`
+fixture`Adding a Task`
     .page`https://gruppe-782.developerakademie.net/add_task.html`
 
 test('Entering Title etc. to task', async t => {
@@ -49,41 +49,62 @@ test('Entering Title etc. to task', async t => {
     const description = Selector('#add-task-description');
     const subTaskInput = Selector('#add-task-subtask-input');
     const addSubTask = Selector('#add-task-subtask-image-container');
-    
 
-    await t 
-        .wait(1000)
+
+    await t
         .typeText(title, 'Trying out TestCafe')
-        .wait(1000)
         .typeText(description, 'Creating a whole task only using TestCafe')
-        .wait(1000)
         .typeText('#add-task-date', '2024-03-22')
-        .wait(1000)
         .click('#add-task-urgent')
-        .wait(1000)
         .click('#add-task-medium')
-        .wait(1000)
         .click('#add-task-low')
-        .wait(1000)
         .click('#add-task-assigne')
-        .wait(1000)
         .click(Selector('.name').withText('TestCafe'))
-        .wait(1000)
         .click('#searchbar-add-contacts-container > .rotated-image')
-        .wait(1000)
         .click('#add-task-category')
-        .wait(1000)
         .click(Selector('#add-task-category-dropdown > div').withText('Technical Task'))
         .typeText(subTaskInput, 'This is a subtask created with TestCafe')
         .click(addSubTask)
         .wait(1000)
         .click('#add-task-create-task')
-        
+})
 
+fixture`Board Testings`
+    .page`https://gruppe-782.developerakademie.net/board.html`
+
+test('Drag and Drop', async t => {
+    const Task = Selector('.taskName').withText('Trying out TestCafe');
+    const closeTask = Selector('div').find('img[src="assets/img/close.png"]').parent('div');
+    const deleteTask = Selector('div').find('img[src="assets/img/delete.png"]').parent('div');
+
+    await t
+        .wait(1000)
+        .hover(Task)
+        .wait(1000)
+        .click(Task)
+        .wait(1000)
+        .click(closeTask)
+        .wait(1000)
+        .click(Task)
+        .wait(1000)
+        .click(deleteTask)
 })
 
 
+fixture.only`Add Contact`
+    .page`https://gruppe-782.developerakademie.net/board.html`;
 
+test('Adding a Contact', async t => {
+
+    await t
+        .click('#contactsPage')
+        .click(Selector('button').withText('Add new contact'))
+        .typeText('#addContactName', 'TestCafe2')
+        .typeText('#addContactEmail', 'testcafe2@test.de')
+        .typeText('#addContactPhone', '012312341234')
+        .click(Selector('button').withText('Create contact'))
+
+})
 
 
 fixture`Logout Tests`
