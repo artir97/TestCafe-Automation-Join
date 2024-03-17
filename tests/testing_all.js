@@ -16,27 +16,41 @@ test('Log in as a guest', async t => {
 
 
 fixture`Hover through summary elements`
-    .beforeEach(async t => {
-        await t.navigateTo('https://gruppe-782.developerakademie.net/summary.html');
-    });
+    .page`https://gruppe-782.developerakademie.net/summary.html`;
 
 test('Hover summary elements', async t => {
     await t
         .maximizeWindow()
         .wait(2000)
         .hover(`.box-container > .summary-top > .summary-big-box`)
-        .wait(300)
+        .wait(100)
         .hover('.box-container > .summary-top > .summary-small-box')
-        .wait(300)
+        .wait(100)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(1)')
-        .wait(300)
+        .wait(100)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(2)')
-        .wait(300)
+        .wait(100)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(3)')
-        .wait(300)
+        .wait(100)
         .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(4)')
-        .wait(300)
-        .click('#taskPage')
+        // .wait(300)
+        // .click('#taskPage')
+
+})
+
+
+fixture`Add Contact`
+    .page`https://gruppe-782.developerakademie.net/board.html`;
+
+test('Adding a Contact', async t => {
+
+    await t
+        .click('#contactsPage')
+        .click(Selector('button').withText('Add new contact'))
+        .typeText('#addContactName', 'TestCafe2')
+        .typeText('#addContactEmail', 'testcafe2@test.de')
+        .typeText('#addContactPhone', '012312341234')
+        .click(Selector('button').withText('Create contact'))
 
 })
 
@@ -91,22 +105,7 @@ test('Drag and Drop', async t => {
 })
 
 
-fixture`Add Contact`
-    .page`https://gruppe-782.developerakademie.net/board.html`;
-
-test('Adding a Contact', async t => {
-
-    await t
-        .click('#contactsPage')
-        .click(Selector('button').withText('Add new contact'))
-        .typeText('#addContactName', 'TestCafe2')
-        .typeText('#addContactEmail', 'testcafe2@test.de')
-        .typeText('#addContactPhone', '012312341234')
-        .click(Selector('button').withText('Create contact'))
-
-})
-
-fixture.only`DeleteContact`
+fixture`DeleteContact`
     .page`https://gruppe-782.developerakademie.net/contacts.html`;
 
 test('Deleting a Contact', async t => {
