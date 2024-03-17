@@ -5,8 +5,8 @@ fixture`Login Tests`
 
 
 test('Log in as a guest', async t => {
-    // const guestLoginBtn = Selector('button').withText('Guest Log in');
     const guestLoginBtn = Selector('#guest-log-in-btn');
+
     await t
         .wait(1500)
         .maximizeWindow()
@@ -19,22 +19,20 @@ fixture`Hover through summary elements`
     .page`https://gruppe-782.developerakademie.net/summary.html`;
 
 test('Hover summary elements', async t => {
-    await t
-        .maximizeWindow()
-        .wait(2000)
-        .hover(`.box-container > .summary-top > .summary-big-box`)
-        .wait(100)
-        .hover('.box-container > .summary-top > .summary-small-box')
-        .wait(100)
-        .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(1)')
-        .wait(100)
-        .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(2)')
-        .wait(100)
-        .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(3)')
-        .wait(100)
-        .hover('.box-container > .summary-bottom >.summary-small-box:nth-child(4)')
-        // .wait(300)
-        // .click('#taskPage')
+    const hoverElements = [
+        '.box-container > .summary-top > .summary-big-box',
+        '.box-container > .summary-top > .summary-small-box',
+        '.box-container > .summary-bottom >.summary-small-box:nth-child(1)',
+        '.box-container > .summary-bottom >.summary-small-box:nth-child(2)',
+        '.box-container > .summary-bottom >.summary-small-box:nth-child(3)',
+        '.box-container > .summary-bottom >.summary-small-box:nth-child(4)'
+    ];
+
+    await t.maximizeWindow().wait(2000);
+
+    for (const hoverElement of hoverElements) {
+        await t.wait(500).hover(hoverElement);
+    }
 
 })
 
@@ -43,14 +41,16 @@ fixture`Add Contact`
     .page`https://gruppe-782.developerakademie.net/board.html`;
 
 test('Adding a Contact', async t => {
+    const addContactBtn = Selector('button').withText('Add new contact');
+    const createNewContactBtn = Selector('button').withText('Create contact');
 
     await t
         .click('#contactsPage')
-        .click(Selector('button').withText('Add new contact'))
+        .click(addContactBtn)
         .typeText('#addContactName', 'TestCafe2')
         .typeText('#addContactEmail', 'testcafe2@test.de')
         .typeText('#addContactPhone', '012312341234')
-        .click(Selector('button').withText('Create contact'))
+        .click(createNewContactBtn);
 
 })
 
@@ -63,7 +63,8 @@ test('Entering Title etc. to task', async t => {
     const description = Selector('#add-task-description');
     const subTaskInput = Selector('#add-task-subtask-input');
     const addSubTask = Selector('#add-task-subtask-image-container');
-
+    const assigneTestCafe = Selector('.name').withText('TestCafe');
+    const technicalTask = Selector('#add-task-category-dropdown > div').withText('Technical Task');
 
     await t
         .typeText(title, 'Trying out TestCafe')
@@ -73,10 +74,10 @@ test('Entering Title etc. to task', async t => {
         .click('#add-task-medium')
         .click('#add-task-low')
         .click('#add-task-assigne')
-        .click(Selector('.name').withText('TestCafe'))
+        .click(assigneTestCafe)
         .click('#searchbar-add-contacts-container > .rotated-image')
         .click('#add-task-category')
-        .click(Selector('#add-task-category-dropdown > div').withText('Technical Task'))
+        .click(technicalTask)
         .typeText(subTaskInput, 'This is a subtask created with TestCafe')
         .click(addSubTask)
         .wait(1000)
@@ -109,9 +110,11 @@ fixture`DeleteContact`
     .page`https://gruppe-782.developerakademie.net/contacts.html`;
 
 test('Deleting a Contact', async t => {
+    const contactTestCafe = Selector('h2').withText('TestCafe2');
+    const delConact = 'button.profileDel';
     await t
-        .click(Selector('h2').withText('TestCafe2'))
-        .click('button.profileDel')
+        .click(contactTestCafe)
+        .click(delConact)
 })
 
 
