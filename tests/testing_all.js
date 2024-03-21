@@ -1,4 +1,4 @@
-const { Selector, ClientFunction } = require("testcafe");
+const { Selector } = require("testcafe");
 
 fixture`Login Tests`
     .page`https://gruppe-782.developerakademie.net/index.html`;
@@ -6,11 +6,10 @@ fixture`Login Tests`
 
 test('Log in as a guest', async t => {
     const guestLoginBtn = Selector('#guest-log-in-btn');
-
     await t
         .wait(1500)
         .maximizeWindow()
-        .click(guestLoginBtn)
+        .expect(guestLoginBtn.innerText).eql('Guest Log in').click(guestLoginBtn)
         .wait(2000)
 })
 
@@ -39,7 +38,7 @@ test('Hover summary elements', async t => {
 })
 
 
-fixture.only`Add Contact`
+fixture`Add Contact`
     .page`https://gruppe-782.developerakademie.net/board.html`;
 
 test('Adding a Contact', async t => {
@@ -67,15 +66,16 @@ fixture`Adding a Task`
 test('Entering Title etc. to task', async t => {
     const title = Selector('#add-task-title');
     const description = Selector('#add-task-description');
+    const date = Selector('#add-task-date');
     const subTaskInput = Selector('#add-task-subtask-input');
     const addSubTask = Selector('#add-task-subtask-image-container');
     const assigneTestCafe = Selector('.name').withText('TestCafe');
     const technicalTask = Selector('#add-task-category-dropdown > div').withText('Technical Task');
 
     await t
-        .typeText(title, 'Trying out TestCafe')
-        .typeText(description, 'Creating a whole task only using TestCafe')
-        .typeText('#add-task-date', '2024-03-22')
+        .typeText(title, 'Trying out TestCafe').expect(title.value).contains('TestCafe')
+        .typeText(description, 'Creating a whole task only using TestCafe').expect(description.value).contains('only using TestCafe')
+        .expect(date.exists).ok().typeText(date, '2024-03-22')
         .click('#add-task-urgent')
         .click('#add-task-medium')
         .click('#add-task-low')
