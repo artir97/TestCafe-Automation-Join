@@ -1,4 +1,4 @@
-const { Selector } = require("testcafe");
+const { Selector, ClientFunction } = require("testcafe");
 
 fixture`Login Tests`
     .page`https://gruppe-782.developerakademie.net/index.html`;
@@ -27,8 +27,10 @@ test('Hover summary elements', async t => {
         '.box-container > .summary-bottom >.summary-small-box:nth-child(3)',
         '.box-container > .summary-bottom >.summary-small-box:nth-child(4)'
     ];
+    const userInitials = Selector('#user-initials > div');
 
     await t.maximizeWindow().wait(2000);
+    await t.expect(userInitials.innerText).contains('G').click(userInitials);
 
     for (const hoverElement of hoverElements) {
         await t.wait(500).hover(hoverElement);
@@ -37,7 +39,7 @@ test('Hover summary elements', async t => {
 })
 
 
-fixture`Add Contact`
+fixture.only`Add Contact`
     .page`https://gruppe-782.developerakademie.net/board.html`;
 
 test('Adding a Contact', async t => {
@@ -46,10 +48,14 @@ test('Adding a Contact', async t => {
 
     await t
         .click('#contactsPage')
-        .click(addContactBtn)
+    await t
+        .expect(addContactBtn.textContent).contains('new contact').click(addContactBtn)
+    await t
         .typeText('#addContactName', 'TestCafe2')
         .typeText('#addContactEmail', 'testcafe2@test.de')
         .typeText('#addContactPhone', '012312341234')
+    await t
+        .expect(createNewContactBtn.textContent).contains('Create contact')
         .click(createNewContactBtn);
 
 })
